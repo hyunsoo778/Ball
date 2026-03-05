@@ -1,0 +1,42 @@
+<!-- ═══ section: #members ═══ -->
+
+<section id="members" class="section">
+  <div class="page-title">MEMBER MGMT</div>
+  <div class="page-sub">회원 추가 · 삭제 · 기준 에버리지 수정 (관리자 전용)</div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;">
+    <div style="font-weight:700;font-size:15px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      ➕ <span>새 회원 추가</span>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+      <div class="input-group">
+        <label>이름 *</label>
+        <input type="text" id="newMemberName2" placeholder="홍길동" style="width:130px;" onkeydown="if(event.key==='Enter')addMember2()">
+      </div>
+      <div class="input-group">
+        <label>기준 에버리지</label>
+        <input type="number" id="newMemberAvg2" placeholder="180" min="0" max="300" style="width:120px;" onkeydown="if(event.key==='Enter')addMember2()">
+      </div>
+      <div class="input-group">
+        <label>성별</label>
+        <select id="newMemberGender2" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;outline:none;font-family:inherit;">
+          <option value="M">♂ 남자</option>
+          <option value="F">♀ 여자</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="addMember2()">➕ 추가하기</button>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-weight:700;font-size:15px;">📋 회원 목록</div>
+      <div id="memberCount" style="font-size:13px;color:var(--text3);"></div>
+    </div>
+    <div id="memberListTable"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="toast show success" id="toast">✅ 관리자 모드 활성화 ✓</div>

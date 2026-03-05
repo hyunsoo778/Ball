@@ -1,0 +1,32 @@
+<!-- ════════════════════════════════
+     Meet Ball - Modal Dialogs
+     ════════════════════════════════ -->
+
+<!-- 관리자 로그인 모달 -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <div class="modal-icon">🔐</div>
+    <div class="modal-title">관리자 로그인</div>
+    <div class="modal-sub">관리자 비밀번호를 입력하세요</div>
+    <input type="password" class="modal-input" id="adminPwInput" placeholder="••••••" maxlength="20" onkeydown="if(event.key==='Enter')checkAdminPw()">
+    <div id="adminPwError" style="font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;min-height:16px;"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="closeAdminModal()">취소</button>
+      <button class="btn btn-primary" onclick="checkAdminPw()">🔓 로그인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 관리자 로그아웃 확인 모달 -->
+<div class="modal-overlay" id="logoutModal">
+  <div class="modal">
+    <div class="modal-icon">👋</div>
+    <div class="modal-title">관리자 로그아웃</div>
+    <div class="modal-sub">관리자 모드를 종료할까요?</div>
+    <div class="modal-btns" style="margin-top:8px;">
+      <button class="btn btn-secondary" onclick="closeLogoutModal()">취소</button>
+      <button class="btn btn-primary" onclick="doLogout()">로그아웃</button>
+    </div>
+  </div>
+</div>
+

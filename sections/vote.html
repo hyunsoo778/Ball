@@ -1,0 +1,247 @@
+<!-- ═══ section: #vote ═══ -->
+
+<section id="vote" class="section active">
+  <div class="page-title">🗳️ 투표</div>
+  <div class="page-sub">정기전 · 번개 참가 투표</div>
+  <!-- 탭 버튼 -->
+  <div style="display:flex;gap:6px;margin-bottom:20px;">
+    <button id="votetab_regular" class="money-tab" onclick="switchVoteTab('regular')">🎳 정기전 투표</button>
+    <button id="votetab_banggae" class="money-tab active" onclick="switchVoteTab('banggae')">⚡ 번개 투표</button>
+  </div>
+  <div id="votePanel_regular" style="display: none;"><div id="voteContent">
+  
+
+  <div class="empty"><div class="empty-icon">🗳️</div><div class="empty-text">진행 중인 투표가 없습니다</div><div class="empty-sub">관리자가 투표를 생성하면 참가 여부를 선택할 수 있습니다</div></div>
+  </div></div>
+  <div id="votePanel_banggae" style=""><div id="banggaeContent">
+  
+
+  
+        <div style="background:var(--card);border:1px solid rgba(34,197,94,0.3);border-radius:16px;overflow:hidden;margin-bottom:20px;">
+          <div style="padding:16px 20px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="font-weight:700;font-size:15px;">3월 5일 1차 번개</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:3px;">2026-03-05 · ⏰ 3. 5. 오후 04:00 마감 · 25/26명 응답</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span style="font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;
+                background:rgba(34,197,94,0.15);
+                color:var(--green);">
+                🟢 진행중
+              </span>
+              
+              
+            </div>
+          </div>
+          <div style="padding:16px 20px;">
+            <!-- 참석 현황 요약 -->
+            <div style="display:flex;gap:12px;margin-bottom:16px;">
+              <div style="flex:1;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px;text-align:center;">
+                <div style="font-size:22px;font-weight:900;color:var(--green);">11</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:2px;">✅ 참석</div>
+                <div style="font-size:11px;color:var(--text2);margin-top:4px;">박만수, 박종성, 오욱현, 이구연, 이재필, 이지윤, 장경훈, 장은선, 장훈석, 조용상, 조정행</div>
+              </div>
+              <div style="flex:1;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px;text-align:center;">
+                <div style="font-size:22px;font-weight:900;color:var(--red);">14</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:2px;">❌ 불참</div>
+                <div style="font-size:11px;color:var(--text2);margin-top:4px;">권우섭, 김기범, 김동현, 김상윤, 김용태, 김주영, 박성준, 양해성, 오일주, 윤미라, 윤연균, 이시은, 이윤경, 정현수</div>
+              </div>
+            </div>
+            <!-- 개인 투표 버튼 -->
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">권우섭</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','권우섭','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','권우섭','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">김기범</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','김기범','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','김기범','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">김동현</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','김동현','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','김동현','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">김상윤</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','김상윤','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','김상윤','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">김용태</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','김용태','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','김용태','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">김주영</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','김주영','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','김주영','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">박만수</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','박만수','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','박만수','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">박성준</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','박성준','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','박성준','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">박종성</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','박종성','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','박종성','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">양해성</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','양해성','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','양해성','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">오욱현</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','오욱현','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','오욱현','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">오일주</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','오일주','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','오일주','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">윤미라</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','윤미라','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','윤미라','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">윤연균</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','윤연균','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','윤연균','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">이구연</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','이구연','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','이구연','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">이시은</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','이시은','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','이시은','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">이윤경</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','이윤경','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','이윤경','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">이재필</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','이재필','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','이재필','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">이지윤</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','이지윤','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','이지윤','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">장경훈</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','장경훈','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','장경훈','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">장민상</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','장민상','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','장민상','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">장은선</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','장은선','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','장은선','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">장훈석</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','장훈석','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','장훈석','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">정현수</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','정현수','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','정현수','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(239,68,68,0.2);border:1px solid var(--red);color:var(--red)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">조용상</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','조용상','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','조용상','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;">
+                  <span style="font-size:12px;font-weight:700;min-width:40px;">조정행</span>
+                  
+                  <button onclick="castBanggaeVote('bg1772499413652','조정행','yes')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:rgba(34,197,94,0.2);border:1px solid var(--green);color:var(--green)">✅</button>
+                  <button onclick="castBanggaeVote('bg1772499413652','조정행','no')" style="font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">❌</button>
+                  
+                </div>
+            </div>
+            <!-- 팀편성 바로가기 -->
+            
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+              <button onclick="goBanggaeTeamById('bg1772499413652')" style="width:100%;padding:10px;border-radius:10px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:var(--yellow);font-weight:700;font-size:13px;cursor:pointer;">
+                ⚡ 참석자 11명으로 팀 편성하기
+              </button>
+            </div>
+          </div>
+        </div></div></div>
+</section>
+
+<!-- 팀 편성 -->

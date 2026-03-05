@@ -1,0 +1,900 @@
+<!-- ═══ section: #dues ═══ -->
+
+<section id="dues" class="section">
+  <div class="page-title">💰 회비 · 벌금 · 상금</div>
+  <div class="page-sub">회비 / 벌금 / 상금 / 대회참가비 / 찬조 통합 관리</div>
+  <!-- 탭 버튼 -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">
+    <button id="moneytab_dues" class="money-tab active" onclick="switchMoneyTab('dues')">💳 회비</button>
+    <button id="moneytab_fines" class="money-tab" onclick="switchMoneyTab('fines')">💸 벌금</button>
+    <button id="moneytab_prizes" class="money-tab" onclick="switchMoneyTab('prizes')">🏆 상금</button>
+    <button id="moneytab_tourney" class="money-tab" onclick="switchMoneyTab('tourney')">🗳️ 대회참가비</button>
+    <button id="moneytab_sponsor" class="money-tab" onclick="switchMoneyTab('sponsor')">🎁 찬조</button>
+    <button id="moneytab_txscan" class="money-tab admin-only" onclick="switchMoneyTab('txscan')" style="display:none;background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(59,130,246,0.1));border:1px solid rgba(249,115,22,0.4);color:var(--accent);">🤖 거래내역 분석</button>
+  </div>
+  <!-- 회비 패널 -->
+  <div id="moneyPanel_dues">
+    <div id="duesContent"></div>
+  </div>
+  <!-- 벌금 패널 -->
+  <div id="moneyPanel_fines" style="display:none;">
+    <div class="tabs">
+      <button class="tab active" onclick="switchFineTab('by_round',this)">📅 회차별 현황</button>
+      <button class="tab" onclick="switchFineTab('by_player',this)">👤 선수별 누적</button>
+      <button class="tab" onclick="switchFineTab('extra',this)">➕ 추가 벌금</button>
+    </div>
+    <div id="fineContent">
+  <!-- 요약 카드 -->
+  <div class="fine-summary-grid" style="margin-bottom:28px;">
+    <div class="fine-summary-card" style="border-color:rgba(239,68,68,0.3);">
+      <div class="fine-summary-icon">💸</div>
+      <div class="fine-summary-val" style="color:var(--red);">45,000<span style="font-size:14px;font-weight:400;">원</span></div>
+      <div class="fine-summary-label">총 벌금 합계</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(34,197,94,0.3);">
+      <div class="fine-summary-icon">✅</div>
+      <div class="fine-summary-val" style="color:var(--green);">45,000<span style="font-size:14px;font-weight:400;">원</span></div>
+      <div class="fine-summary-label">납부 완료</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(239,68,68,0.2);">
+      <div class="fine-summary-icon">⏳</div>
+      <div class="fine-summary-val" style="color:var(--text2);">0<span style="font-size:14px;font-weight:400;">원</span></div>
+      <div class="fine-summary-label">미납 합계</div>
+    </div>
+    <div class="fine-summary-card">
+      <div class="fine-summary-icon">📊</div>
+      <div class="fine-summary-val" style="color:var(--accent);">100<span style="font-size:14px;font-weight:400;">%</span></div>
+      <div class="fine-summary-label">납부율 (21/21명)</div>
+    </div>
+    <div class="fine-summary-card">
+      <div class="fine-summary-icon">🎳</div>
+      <div class="fine-summary-val" style="color:var(--blue);">21<span style="font-size:14px;font-weight:400;">건</span></div>
+      <div class="fine-summary-label">총 벌금 건수</div>
+    </div>
+  </div>
+
+  <!-- 납부 안내 -->
+  <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.2);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:10px;">
+    <span style="font-size:18px;">💡</span>
+    <div style="font-size:13px;color:var(--text2);">
+      체크박스를 클릭하면 납부 상태가 변경됩니다.
+      <span style="color:var(--text3);"> (관리자 로그인 시 수정 가능)</span>
+    </div>
+  </div>
+
+  <!-- 회차별 카드 -->
+  
+    <div class="fine-round-card">
+      <div class="fine-round-header">
+        <div>
+          <div style="font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;">
+            2월 2회차
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);">✓ 정산완료</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;">2026-02-26 · 벌금대상 8명</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">19,000원</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            납부 <span style="color:var(--green);font-weight:600;">19,000</span> · 
+            미납 <span style="color:var(--text3);">0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_이구연" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','이구연')">
+          <label class="fine-check-box" for="chk_r4_이구연" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">이구연</div>
+          <div class="fine-detail">
+            게임: <span style="">159</span> · <span style="color:var(--red);">107</span> · <span style="color:var(--red);">118</span>
+            &nbsp;·&nbsp; 기준에버 132
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_오일주" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','오일주')">
+          <label class="fine-check-box" for="chk_r4_오일주" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">오일주</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">157</span> · <span style="color:var(--red);">190</span> · <span style="color:var(--red);">147</span>
+            &nbsp;·&nbsp; 기준에버 192
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_장은선" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','장은선')">
+          <label class="fine-check-box" for="chk_r4_장은선" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">장은선</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">125</span> · <span style="">152</span> · <span style="color:var(--red);">108</span>
+            &nbsp;·&nbsp; 기준에버 130
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_박종성" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','박종성')">
+          <label class="fine-check-box" for="chk_r4_박종성" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">박종성</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">142</span> · <span style="color:var(--red);">152</span> · <span style="color:var(--red);">148</span>
+            &nbsp;·&nbsp; 기준에버 183
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_조용상" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','조용상')">
+          <label class="fine-check-box" for="chk_r4_조용상" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">조용상</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">128</span> · <span style="color:var(--red);">98</span> · <span style="color:var(--red);">121</span>
+            &nbsp;·&nbsp; 기준에버 148
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_이윤경" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','이윤경')">
+          <label class="fine-check-box" for="chk_r4_이윤경" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">이윤경</div>
+          <div class="fine-detail">
+            게임: <span style="">180</span> · <span style="color:var(--red);">135</span> · <span style="color:var(--red);">146</span>
+            &nbsp;·&nbsp; 기준에버 160
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r4_박성준" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r4','박성준')">
+          <label class="fine-check-box" for="chk_r4_박성준" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">박성준</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">148</span> · <span style="color:var(--red);">151</span> · <span style="color:var(--red);">139</span>
+            &nbsp;·&nbsp; 기준에버 152
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid" style="border-left:3px solid var(--yellow);">
+        <!-- 추가벌금 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_ef_ef1772498233934" checked="" disabled="" onchange="toggleExtraFinePaidAndRefresh('ef1772498233934')">
+          <label class="fine-check-box" for="chk_ef_ef1772498233934" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">박성준</div>
+          <div class="fine-detail">👕 클럽티 미착용</div>
+        </div>
+    </div>
+    <div class="fine-round-card">
+      <div class="fine-round-header">
+        <div>
+          <div style="font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;">
+            2월 1회차
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);">✓ 정산완료</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;">2026-02-12 · 벌금대상 2명</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">4,000원</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            납부 <span style="color:var(--green);font-weight:600;">4,000</span> · 
+            미납 <span style="color:var(--text3);">0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r3_오일주" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r3','오일주')">
+          <label class="fine-check-box" for="chk_r3_오일주" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">오일주</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">176</span> · <span style="color:var(--red);">172</span> · <span style="">210</span>
+            &nbsp;·&nbsp; 기준에버 194
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r3_조용상" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r3','조용상')">
+          <label class="fine-check-box" for="chk_r3_조용상" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">조용상</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">123</span> · <span style="color:var(--red);">150</span> · <span style="color:var(--red);">132</span>
+            &nbsp;·&nbsp; 기준에버 154
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+    </div>
+    <div class="fine-round-card">
+      <div class="fine-round-header">
+        <div>
+          <div style="font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;">
+            1월 2회차
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);">✓ 정산완료</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;">2026-01-22 · 벌금대상 5명</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">10,000원</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            납부 <span style="color:var(--green);font-weight:600;">10,000</span> · 
+            미납 <span style="color:var(--text3);">0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r2_박성준" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r2','박성준')">
+          <label class="fine-check-box" for="chk_r2_박성준" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">박성준</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">132</span> · <span style="color:var(--red);">146</span> · <span style="">166</span>
+            &nbsp;·&nbsp; 기준에버 156
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r2_오일주" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r2','오일주')">
+          <label class="fine-check-box" for="chk_r2_오일주" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">오일주</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">189</span> · <span style="color:var(--red);">154</span> · <span style="">234</span>
+            &nbsp;·&nbsp; 기준에버 196
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r2_장경훈" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r2','장경훈')">
+          <label class="fine-check-box" for="chk_r2_장경훈" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">장경훈</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">125</span> · <span style="color:var(--red);">81</span> · <span style="">142</span>
+            &nbsp;·&nbsp; 기준에버 129
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r2_장은선" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r2','장은선')">
+          <label class="fine-check-box" for="chk_r2_장은선" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">장은선</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">110</span> · <span style="color:var(--red);">105</span> · <span style="">157</span>
+            &nbsp;·&nbsp; 기준에버 134
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r2_정현수" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r2','정현수')">
+          <label class="fine-check-box" for="chk_r2_정현수" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">정현수</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">193</span> · <span style="color:var(--red);">201</span> · <span style="color:var(--red);">180</span>
+            &nbsp;·&nbsp; 기준에버 203
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+    </div>
+    <div class="fine-round-card">
+      <div class="fine-round-header">
+        <div>
+          <div style="font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;">
+            1월 1회차
+            <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);">✓ 정산완료</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;">2026-01-08 · 벌금대상 6명</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">12,000원</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            납부 <span style="color:var(--green);font-weight:600;">12,000</span> · 
+            미납 <span style="color:var(--text3);">0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_박성준" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','박성준')">
+          <label class="fine-check-box" for="chk_r1_박성준" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">박성준</div>
+          <div class="fine-detail">
+            게임: <span style="">172</span> · <span style="color:var(--red);">154</span> · <span style="color:var(--red);">138</span>
+            &nbsp;·&nbsp; 기준에버 159
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_양해성" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','양해성')">
+          <label class="fine-check-box" for="chk_r1_양해성" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">양해성</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">183</span> · <span style="color:var(--red);">135</span> · <span style="color:var(--red);">182</span>
+            &nbsp;·&nbsp; 기준에버 191
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_윤미라" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','윤미라')">
+          <label class="fine-check-box" for="chk_r1_윤미라" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">윤미라</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">145</span> · <span style="color:var(--red);">129</span> · <span style="color:var(--red);">141</span>
+            &nbsp;·&nbsp; 기준에버 158
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_윤연균" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','윤연균')">
+          <label class="fine-check-box" for="chk_r1_윤연균" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">윤연균</div>
+          <div class="fine-detail">
+            게임: <span style="color:var(--red);">173</span> · <span style="color:var(--red);">150</span> · <span style="">203</span>
+            &nbsp;·&nbsp; 기준에버 184
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_이윤경" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','이윤경')">
+          <label class="fine-check-box" for="chk_r1_이윤경" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">이윤경</div>
+          <div class="fine-detail">
+            게임: <span style="">165</span> · <span style="color:var(--red);">124</span> · <span style="">164</span>
+            &nbsp;·&nbsp; 기준에버 157
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+      <div class="fine-row paid">
+        <!-- 체크박스 -->
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="chk_r1_장은선" checked="" disabled="" onchange="toggleFinePaymentAndRefresh('r1','장은선')">
+          <label class="fine-check-box" for="chk_r1_장은선" style="cursor:not-allowed;opacity:0.5;"></label>
+        </div>
+        <!-- 이름 & 정보 -->
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="text-decoration:line-through;color:var(--text3);">장은선</div>
+          <div class="fine-detail">
+            게임: <span style="">152</span> · <span style="color:var(--red);">120</span> · <span style="color:var(--red);">125</span>
+            &nbsp;·&nbsp; 기준에버 139
+          </div>
+        </div>
+        <!-- 금액 & 뱃지 -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="fine-amount" style="color:var(--text3);text-decoration:line-through;">2,000원</div>
+          <span class="fine-paid-badge">✓ 납부완료</span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  </div>
+  <!-- 상금 패널 -->
+  <div id="moneyPanel_prizes" style="display:none;">
+    <div id="prizesContent">
+  <!-- 요약 -->
+  <div class="fine-summary-grid" style="margin-bottom:24px;">
+    <div class="fine-summary-card" style="border-color:rgba(234,179,8,0.4);">
+      <div class="fine-summary-icon">🏆</div>
+      <div class="fine-summary-val" style="color:var(--yellow);">55,000<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">총 상금</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(34,197,94,0.3);">
+      <div class="fine-summary-icon">✅</div>
+      <div class="fine-summary-val" style="color:var(--green);">0<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">지급 완료</div>
+    </div>
+    <div class="fine-summary-card">
+      <div class="fine-summary-icon">⏳</div>
+      <div class="fine-summary-val" style="color:var(--yellow);">55,000<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">미지급</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(249,115,22,0.3);">
+      <div class="fine-summary-icon">🥇</div>
+      <div class="fine-summary-val" style="color:var(--accent);font-size:18px;">장훈석</div>
+      <div class="fine-summary-label">31,000원 수령</div>
+    </div>
+  </div>
+
+  <!-- 입력 폼 (관리자만) -->
+  
+
+  <!-- 목록 -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);font-weight:700;font-size:14px;">🏅 상금 내역</div>
+    
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585401325" disabled="" onchange="togglePrizePaid('pr1772585401325')">
+          <label class="fine-check-box" for="prchk_pr1772585401325" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장경훈</div>
+          <div class="fine-detail">뽑기상금 · 2월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585390029" disabled="" onchange="togglePrizePaid('pr1772585390029')">
+          <label class="fine-check-box" for="prchk_pr1772585390029" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">김용태</div>
+          <div class="fine-detail">뽑기상금 · 2월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          2,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585380637" disabled="" onchange="togglePrizePaid('pr1772585380637')">
+          <label class="fine-check-box" for="prchk_pr1772585380637" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">이구연</div>
+          <div class="fine-detail">뽑기상금 · 2월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585370973" disabled="" onchange="togglePrizePaid('pr1772585370973')">
+          <label class="fine-check-box" for="prchk_pr1772585370973" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장훈석</div>
+          <div class="fine-detail">뽑기상금 · 2월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585340780" disabled="" onchange="togglePrizePaid('pr1772585340780')">
+          <label class="fine-check-box" for="prchk_pr1772585340780" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장경훈</div>
+          <div class="fine-detail">뽑기상금 · 2월 1회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585320459" disabled="" onchange="togglePrizePaid('pr1772585320459')">
+          <label class="fine-check-box" for="prchk_pr1772585320459" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">윤연균</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          2,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585311980" disabled="" onchange="togglePrizePaid('pr1772585311980')">
+          <label class="fine-check-box" for="prchk_pr1772585311980" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장경훈</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585296787" disabled="" onchange="togglePrizePaid('pr1772585296787')">
+          <label class="fine-check-box" for="prchk_pr1772585296787" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">오일주</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          10,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585285731" disabled="" onchange="togglePrizePaid('pr1772585285731')">
+          <label class="fine-check-box" for="prchk_pr1772585285731" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">이지윤</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585271778" disabled="" onchange="togglePrizePaid('pr1772585271778')">
+          <label class="fine-check-box" for="prchk_pr1772585271778" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장훈석</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          30,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585263107" disabled="" onchange="togglePrizePaid('pr1772585263107')">
+          <label class="fine-check-box" for="prchk_pr1772585263107" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">조정행</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585245466" disabled="" onchange="togglePrizePaid('pr1772585245466')">
+          <label class="fine-check-box" for="prchk_pr1772585245466" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">장은선</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585237298" disabled="" onchange="togglePrizePaid('pr1772585237298')">
+          <label class="fine-check-box" for="prchk_pr1772585237298" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">정현수</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          1,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+      <div class="fine-row ">
+        <div class="fine-check-wrap">
+          <input type="checkbox" id="prchk_pr1772585227306" disabled="" onchange="togglePrizePaid('pr1772585227306')">
+          <label class="fine-check-box" for="prchk_pr1772585227306" style="cursor:not-allowed;opacity:0.5;background:var(--bg3);border-color:var(--border);"></label>
+        </div>
+        <div style="font-size:20px;">🏆</div>
+        <div style="flex:1;min-width:0;">
+          <div class="fine-name" style="">이시은</div>
+          <div class="fine-detail">뽑기상금 · 1월 2회차</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--yellow);">
+          2,000원
+        </div>
+        <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(234,179,8,0.06);color:var(--text3);border:1px solid var(--border);white-space:nowrap;">⏳ 미지급</span>
+        
+      </div>
+  </div></div>
+  </div>
+  <!-- 거래내역 분석 패널 -->
+  <div id="moneyPanel_txscan" style="display:none;">
+    <div id="txscanContent"></div>
+  </div>
+  <!-- 대회참가비 패널 -->
+  <div id="moneyPanel_tourney" style="display:none;">
+    <div id="tourneyContent">
+  <!-- 요약 카드 -->
+  <div class="fine-summary-grid" style="margin-bottom:24px;">
+    <div class="fine-summary-card" style="border-color:rgba(59,130,246,0.4);">
+      <div class="fine-summary-icon">🏟️</div>
+      <div class="fine-summary-val" style="color:var(--blue);">0<span style="font-size:14px;">개</span></div>
+      <div class="fine-summary-label">등록된 대회</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(34,197,94,0.3);">
+      <div class="fine-summary-icon">✅</div>
+      <div class="fine-summary-val" style="color:var(--green);">0<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">납부 완료</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(239,68,68,0.3);">
+      <div class="fine-summary-icon">⏳</div>
+      <div class="fine-summary-val" style="color:var(--text2);">0<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">미납 합계</div>
+    </div>
+    <div class="fine-summary-card">
+      <div class="fine-summary-icon">💰</div>
+      <div class="fine-summary-val" style="color:var(--accent);">0<span style="font-size:14px;">원</span></div>
+      <div class="fine-summary-label">총 참가비 청구액</div>
+    </div>
+  </div>
+
+  <!-- 대회 등록 폼 (관리자) -->
+  
+
+  <!-- 대회 목록 -->
+  <div class="empty"><div class="empty-icon">🏟️</div><div class="empty-text">등록된 대회가 없습니다</div><div class="empty-sub">관리자가 대회를 등록하면 납부 현황을 관리할 수 있습니다</div></div>
+  </div>
+  </div>
+  <!-- 찬조 패널 -->
+  <div id="moneyPanel_sponsor" style="display:none;">
+    <div id="sponsorContent">
+  <!-- 요약 카드 -->
+  <div class="fine-summary-grid" style="margin-bottom:24px;">
+    <div class="fine-summary-card" style="border-color:rgba(234,179,8,0.4);">
+      <div class="fine-summary-icon">🎁</div>
+      <div class="fine-summary-val" style="color:var(--yellow);">0<span style="font-size:14px;">만원</span></div>
+      <div class="fine-summary-label">총 찬조금액</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(249,115,22,0.3);">
+      <div class="fine-summary-icon">👥</div>
+      <div class="fine-summary-val" style="color:var(--accent);">0<span style="font-size:14px;">명</span></div>
+      <div class="fine-summary-label">찬조 인원</div>
+    </div>
+    <div class="fine-summary-card">
+      <div class="fine-summary-icon">📋</div>
+      <div class="fine-summary-val" style="color:var(--text);">0<span style="font-size:14px;">건</span></div>
+      <div class="fine-summary-label">총 건수</div>
+    </div>
+    <div class="fine-summary-card" style="border-color:rgba(234,179,8,0.3);">
+      <div class="fine-summary-icon">🥇</div>
+      <div class="fine-summary-val" style="color:var(--yellow);font-size:16px;">-</div>
+      <div class="fine-summary-label">찬조 없음</div>
+    </div>
+  </div>
+
+  <!-- 찬조자별 누계 바 -->
+  
+
+  <!-- 등록 폼 (관리자) -->
+  
+
+  <!-- 내역 목록 -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-weight:700;font-size:14px;">📋 찬조 내역 (최신순)</div>
+      <div style="font-size:12px;color:var(--text3);">총 0건 · 0원</div>
+    </div>
+    <div class="empty"><div class="empty-icon">🎁</div><div class="empty-text">등록된 찬조 내역이 없습니다</div></div>
+  </div></div>
+  </div>
+</section>
+
+
+
+<!-- 정기전 투표 -->
