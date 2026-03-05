@@ -5854,7 +5854,7 @@ function renderScoreEditor(scores) {
       <td>
         <select onchange="updateRowCalc(${i})" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:13px;font-family:inherit;width:100%;">
           <option value="">-- 선택 --</option>
-          ${memberOptions.replace(`value="${row.name}"`, `value="${row.name}" selected`)}
+          ${memberNames.map(n => `<option value="${n}"${n === row.name ? ' selected' : ''}>${n}</option>`).join('')}
         </select>
       </td>
       <td><input type="number" value="${row.g1||0}" min="0" max="300" onchange="updateRowCalc(${i})" style="width:60px;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:4px;border-radius:6px;text-align:center;font-family:inherit;"></td>
