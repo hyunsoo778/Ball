@@ -5748,13 +5748,15 @@ async function recognizeScores(dataUrl) {
             role: 'user',
             content: [
               { type: 'image', source: { type: 'base64', media_type: mimeType, data: base64 } },
-              { type: 'text', text: `볼링 점수표에서 각 선수의 게임 점수를 추출해줘.
-JSON 배열만 출력. 다른 말 없이.
+              { type: 'text', text: `볼링 점수표 이미지에서 선수별 점수를 추출해줘.
+JSON 배열만 출력. 마크다운, 설명 절대 없이.
 [{"name":"이름","g1":숫자,"g2":숫자,"g3":숫자,"total":숫자}]
-- 이름: 한국어 그대로
-- g1/g2/g3: 1게임/2게임/3게임 점수
-- total: 세 게임 합계
-- 에버리지, 레인번호, 합계 열은 무시하고 게임 점수 3개만 추출` }
+규칙:
+- name: 표에 있는 한국어 이름 그대로 (동그라미/표시 무시)
+- g1/g2/g3: 1게임/2게임/3게임 점수 (2~3자리 정수)
+- total: g1+g2+g3 합계
+- 레인번호(한자리 숫자), 에버리지(소수점), 합계열은 제외
+- 점수가 0이거나 읽기 어려우면 0으로` }
             ]
           }]
         })
@@ -5773,6 +5775,22 @@ JSON 배열만 출력. 다른 말 없이.
         if (!Array.isArray(rows)) rows = [];
         rows = rows.filter(r => r && (r.g1 > 0 || r.g2 > 0 || r.g3 > 0));
       } catch(e) { rows = []; }
+
+      // 인식된 이름을 회원 목록과 자동 매칭 (유사도 기반)
+      const appData = loadData();
+      const memberNames = Object.keys(appData.members || BASE_PLAYERS);
+      rows = rows.map(row => {
+        if (!row.name) return row;
+        // 완전일치
+        if (memberNames.includes(row.name)) return row;
+        // 부분일치: 인식된 이름이 회원명에 포함되거나 반대
+        const matched = memberNames.find(m =>
+          m.includes(row.name) || row.name.includes(m) ||
+          // 글자 2개 이상 겹치는지 확인
+          [...row.name].filter(c => m.includes(c)).length >= 2
+        );
+        return { ...row, name: matched || row.name };
+      });
 
       const scores = rows.length > 0 ? rows : [{name:'',g1:0,g2:0,g3:0,total:0}];
       renderScoreEditor(scores);
@@ -5941,44 +5959,83 @@ async function analyzeTxImage(dataUrl, mimeType) {
   resultDiv.style.display = 'none';
 
   try {
-    const processedUrl2 = await preprocessImage(dataUrl);
-    const { data: { text } } = await Tesseract.recognize(processedUrl2, 'kor+eng', {
-      logger: () => {},
-      tessedit_pageseg_mode: '4',
-    });
+    const appData2 = loadData();
+    const members = Object.keys(appData2.members || BASE_PLAYERS).sort();
+    const apiKey2 = getApiKey();
 
-    const data = loadData();
-    const members = Object.keys(data.members || BASE_PLAYERS).sort();
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-    const items = [];
+    if (apiKey2) {
+      // ── Claude Vision 모드 ──
+      const base64Tx = dataUrl.split(',')[1];
+      const mimeTx = dataUrl.split(';')[0].split(':')[1] || 'image/jpeg';
 
-    for(const line of lines) {
-      // 금액 패턴: 콤마포함숫자+원
-      const amtMatch = line.match(/([0-9,]+)원/);
-      if(!amtMatch) continue;
-      const amount = parseInt(amtMatch[1].replace(/,/g,''));
-      if(amount < 1000 || amount > 10000000) continue;
+      const txResp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey2,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1000,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: mimeTx, data: base64Tx } },
+              { type: 'text', text: `은행 거래내역 이미지에서 입금 항목만 추출해줘.
+회원 목록: ${members.join(', ')}
 
-      // 이름 매칭: 회원 목록에서 부분일치
-      let name = null;
-      for(const m of members) {
-        if(line.includes(m)) { name = m; break; }
-      }
-
-      items.push({
-        rawText: line,
-        amount,
-        name,
-        category: amount === 30000 ? 'dues' : amount < 10000 ? 'fine' : 'unknown',
-        direction: 'in'
+JSON 배열만 출력. 설명 없이.
+[{"rawText":"원문텍스트","amount":숫자,"name":"이름","category":"분류"}]
+규칙:
+- amount: 입금 금액 (숫자만, 콤마없이)
+- name: 회원 목록에서 가장 유사한 이름. 없으면 null
+- category: 30000원→"dues"(회비), 10000원미만→"fine"(벌금), 나머지→"unknown"
+- 잔액/출금 행 제외, 입금만 포함
+- 이름이 합쳐진 경우(예: 이윤경오욱현) 60000원이면 각각 30000원씩 2개 행으로 분리` }
+            ]
+          }]
+        })
       });
-    }
 
-    loading.style.display = 'none';
-    renderTxManualEditor(items, members);
+      if (!txResp.ok) throw new Error('API 오류 ' + txResp.status);
+      const txResult = await txResp.json();
+      const txRaw = txResult.content?.map(c => c.text || '').join('').trim();
+      let items = [];
+      try {
+        items = JSON.parse(txRaw.replace(/```json|```/g, '').trim());
+        if (!Array.isArray(items)) items = [];
+      } catch(e) { items = []; }
+
+      loading.style.display = 'none';
+      renderTxManualEditor(items, members);
+
+    } else {
+      // ── Tesseract 폴백 ──
+      const processedUrl2 = await preprocessImage(dataUrl);
+      const { data: { text } } = await Tesseract.recognize(processedUrl2, 'kor+eng', {
+        logger: () => {},
+        tessedit_pageseg_mode: '4',
+      });
+
+      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+      const items = [];
+      for(const line of lines) {
+        const amtMatch = line.match(/([0-9,]+)원/);
+        if(!amtMatch) continue;
+        const amount = parseInt(amtMatch[1].replace(/,/g,''));
+        if(amount < 1000 || amount > 10000000) continue;
+        let name = null;
+        for(const m of members) { if(line.includes(m)) { name = m; break; } }
+        items.push({ rawText: line, amount, name, category: amount === 30000 ? 'dues' : amount < 10000 ? 'fine' : 'unknown' });
+      }
+      loading.style.display = 'none';
+      renderTxManualEditor(items, members);
+    }
   } catch(e) {
     loading.style.display = 'none';
-    toast('OCR 실패. 텍스트로 직접 입력해주세요.', 'error');
+    toast('OCR 실패: ' + e.message, 'error');
   }
 }
 
